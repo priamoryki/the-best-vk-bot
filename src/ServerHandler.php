@@ -9,7 +9,6 @@ use VK\Client\VKApiClient;
 
 class ServerHandler extends VKCallbackApiServerHandler
 {
-    const GROUP_ID = 216872971;
     private VKApiClient $vkApi;
     private CommandsStorage $storage;
 
@@ -23,7 +22,7 @@ class ServerHandler extends VKCallbackApiServerHandler
 
     function confirmation(int $group_id, ?string $secret)
     {
-        if ($secret === GROUP_SECRET && $group_id === static::GROUP_ID) {
+        if ($secret === GROUP_SECRET && $group_id === GROUP_ID) {
             echo API_CONFIRMATION_TOKEN;
         }
     }
