@@ -1,7 +1,8 @@
 <?php
 
-namespace Bot\Commands;
+namespace Bot\Commands\Chat;
 
+use Bot\Commands\Command;
 use VK\Client\VKApiClient;
 
 class HelloCommand implements Command
@@ -31,9 +32,9 @@ class HelloCommand implements Command
         $user = $users_get_response[0];
 
         $this->vkApi->messages()->send(BOT_TOKEN, [
-            "user_id" => $user_id,
+            "peer_id" => $user_id,
             "random_id" => random_int(0, PHP_INT_MAX),
-            "message" => "Hello, ${user["first_name"]}!"
+            "message" => "Hello, ${user["first_name"]}!",
         ]);
     }
 }

@@ -40,11 +40,10 @@ class CommandsStorage
      */
     public function getCommand(string $name): ?Command
     {
-        try {
-            return $this->commands[$name];
-        } catch (Exception $e) {
+        if (!key_exists($name, $this->commands)) {
             return null;
         }
+        return $this->commands[$name];
     }
 
     public function executeCommand(string $name, int $user_id, array $args = array()): void
