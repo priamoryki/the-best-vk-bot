@@ -33,7 +33,6 @@ class CatCommand implements Command
         $text = join(" ", $args);
         $filename = "/var/tmp/the-best-vk-bot.png";
         $this->cataas->says($text)->get($filename);
-        error_log(json_encode(new CURLfile($filename)));
         $photo = $this->uploadPhoto($user_id, $filename);
 
         $this->vkApi->messages()->send(BOT_TOKEN, [
