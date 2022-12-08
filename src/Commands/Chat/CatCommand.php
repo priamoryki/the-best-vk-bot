@@ -3,6 +3,7 @@
 namespace Bot\Commands\Chat;
 
 use Bot\Commands\Command;
+use Bot\Commands\Utils\QuotesAPI;
 use CataasApiPhp\CataasApiPhp;
 use CURLFile;
 use VK\Client\VKApiClient;
@@ -18,9 +19,9 @@ class CatCommand implements Command
         $this->cataas = CataasApiPhp::factory();
     }
 
-    public function getName(): string
+    public function getNames(): array
     {
-        return "cat";
+        return ["cat"];
     }
 
     public function getDescription(): string
@@ -30,6 +31,8 @@ class CatCommand implements Command
 
     public function execute(int $user_id, array $args): void
     {
+        // TODO
+        $quote = QuotesAPI::getRandomQuote();
         $text = join(" ", $args);
         $filename = "/var/tmp/the-best-vk-bot.png";
         $this->cataas->says($text)->get($filename);

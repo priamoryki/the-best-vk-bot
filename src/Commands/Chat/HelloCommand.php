@@ -14,9 +14,9 @@ class HelloCommand implements Command
         $this->vkApi = $vkApi;
     }
 
-    public function getName(): string
+    public function getNames(): array
     {
-        return "hello";
+        return ["hello"];
     }
 
     public function getDescription(): string

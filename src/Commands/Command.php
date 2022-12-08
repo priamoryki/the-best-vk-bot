@@ -4,7 +4,7 @@ namespace Bot\Commands;
 
 interface Command
 {
-    public function getName(): string;
+    public function getNames(): array;
 
     public function getDescription(): string;
 

@@ -2,23 +2,22 @@
 
 namespace Bot\Commands\Deadline;
 
-class SetDeadline implements \Bot\Commands\Command
-{
+use Bot\Commands\Command;
 
+class GetDeadlines implements Command
+{
     public function getNames(): array
     {
-        return ["set_deadline"];
+        return ["get_deadlines"];
     }
 
     public function getDescription(): string
     {
-        return "Sets deadline";
+        return "Sends message with all your deadlines";
     }
 
     public function execute(int $user_id, array $args): void
     {
         // TODO: Implement execute() method.
-        $date = $args[0];
-        // exec("* * * * * php /usr/local/bin/run.php &> /dev/null");
     }
 }
