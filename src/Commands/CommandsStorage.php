@@ -16,7 +16,7 @@ class CommandsStorage
 
     public function addCommand(Command $command): void
     {
-        foreach ($command->getNames() as &$name) {
+        foreach ($command->getNames() as $name) {
             $this->commands[$name] = $command;
         }
     }
