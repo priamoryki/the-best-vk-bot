@@ -4,15 +4,25 @@ namespace Bot\Commands\Deadline;
 
 class Deadline
 {
+    private int $id;
     private int $user_id;
-    private int $timestamp;
-    private string $message_text;
+    private string $name;
+    private string $date;
 
-    public function __construct(int $user_id, int $timestamp, string $message_text)
+    public function __construct(int $id, int $user_id, string $date, string $name)
     {
+        $this->id = $id;
         $this->user_id = $user_id;
-        $this->timestamp = $timestamp;
-        $this->message_text = $message_text;
+        $this->date = $date;
+        $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -24,18 +34,18 @@ class Deadline
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getTimestamp(): int
+    public function getName(): string
     {
-        return $this->timestamp;
+        return $this->name;
     }
 
     /**
      * @return string
      */
-    public function getMessageText(): string
+    public function getDate(): string
     {
-        return $this->message_text;
+        return $this->date;
     }
 }

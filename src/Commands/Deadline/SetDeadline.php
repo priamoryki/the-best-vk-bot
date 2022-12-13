@@ -4,13 +4,13 @@ namespace Bot\Commands\Deadline;
 
 use Bot\Commands\Command;
 use Bot\Commands\Utils\Utils;
-use VK\Client\VKApiClient;
+use Bot\Commands\Utils\VKAdvancedAPI;
 
 class SetDeadline implements Command
 {
-    private VKApiClient $vkApi;
+    private VKAdvancedAPI $vkApi;
 
-    public function __construct(VKApiClient $vkApi)
+    public function __construct(VKAdvancedAPI $vkApi)
     {
         $this->vkApi = $vkApi;
     }
@@ -27,14 +27,16 @@ class SetDeadline implements Command
 
     public function execute(int $user_id, array $args): void
     {
-        // TODO: Implement execute() method.
-        $date = "0-59 * * * *";
         // TODO: edit DB
-        $command = Utils::getDeadlineNotificationCommand($date, $user_id);
+        $date = "0-59 * * * *";
+        $id = $user_id;
+        $name = "TODO";
+        $deadline = new Deadline($id, $user_id, $date, $name);
+        $command = Utils::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getUserId());
         Utils::addCrontabTask($command);
 
         $this->vkApi->messages()->send(BOT_TOKEN, [
-            "peer_id" => $user_id,
+            "peer_id" => $deadline->getUserId(),
             "random_id" => random_int(0, PHP_INT_MAX),
             "message" => "Deadline has been successfully set!",
         ]);

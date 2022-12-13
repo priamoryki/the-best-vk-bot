@@ -7,17 +7,17 @@ use Bot\Commands\Chat\HelloCommand;
 use Bot\Commands\CommandsStorage;
 use Bot\Commands\Deadline\GetDeadlines;
 use Bot\Commands\Deadline\SetDeadline;
+use Bot\Commands\Utils\VKAdvancedAPI;
 use VK\CallbackApi\Server\VKCallbackApiServerHandler;
-use VK\Client\VKApiClient;
 
 class ServerHandler extends VKCallbackApiServerHandler
 {
-    private VKApiClient $vkApi;
+    private VKAdvancedAPI $vkApi;
     private CommandsStorage $storage;
 
     public function __construct()
     {
-        $this->vkApi = new VKApiClient("5.130");
+        $this->vkApi = new VKAdvancedAPI("5.130");
         $this->storage = new CommandsStorage(
             new HelloCommand($this->vkApi),
             new CatCommand($this->vkApi),

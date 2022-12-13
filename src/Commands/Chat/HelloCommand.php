@@ -3,13 +3,13 @@
 namespace Bot\Commands\Chat;
 
 use Bot\Commands\Command;
-use VK\Client\VKApiClient;
+use Bot\Commands\Utils\VKAdvancedAPI;
 
 class HelloCommand implements Command
 {
-    private VKApiClient $vkApi;
+    private VKAdvancedAPI $vkApi;
 
-    public function __construct(VKApiClient $vkApi)
+    public function __construct(VKAdvancedAPI $vkApi)
     {
         $this->vkApi = $vkApi;
     }

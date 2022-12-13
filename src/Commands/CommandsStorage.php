@@ -2,8 +2,6 @@
 
 namespace Bot\Commands;
 
-use Exception;
-
 class CommandsStorage
 {
     private array $commands;
