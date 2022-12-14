@@ -31,6 +31,9 @@ class GetDeadlines extends DeadlineCommand
             $name = $deadline->getName();
             $result .= "name: $name, date: $date, id: $id\n";
         }
+        if (strlen($result) == 0) {
+            $result = "You don't have active deadlines!";
+        }
         $this->sendMessage($user_id, $result);
     }
 }
