@@ -1,6 +1,6 @@
 <?php
 
-namespace Bot\Commands\Utils;
+namespace Bot\Utils;
 
 class QuotesAPI
 {

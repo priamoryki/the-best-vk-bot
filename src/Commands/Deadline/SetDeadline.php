@@ -2,17 +2,16 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Commands\Command;
-use Bot\Commands\Utils\Utils;
-use Bot\Commands\Utils\VKAdvancedAPI;
+use Bot\Utils\Utils;
+use Bot\Utils\VKAdvancedAPI;
 
-class SetDeadline implements Command
+class SetDeadline extends DeadlineCommand
 {
-    private VKAdvancedAPI $vkApi;
+    private string $inputFormat = "Input format: min hour day mon year name.";
 
     public function __construct(VKAdvancedAPI $vkApi)
     {
-        $this->vkApi = $vkApi;
+        parent::__construct($vkApi);
     }
 
     public function getNames(): array
@@ -22,23 +21,31 @@ class SetDeadline implements Command
 
     public function getDescription(): string
     {
-        return "Sets deadline";
+        return "Sets deadline. $this->inputFormat";
     }
 
     public function execute(int $user_id, array $args): void
     {
-        // TODO: edit DB
-        $date = "0-59 * * * *";
-        $id = $user_id;
-        $name = "TODO";
+        if (count($args) < 6) {
+            $this->sendMessage($user_id, "Not enough arguments! $this->inputFormat");
+            return;
+        }
+//        for ($i = 0; $i < 5; $i++) {
+//            if (!is_numeric($args[$i])) {
+//                $this->sendMessage($user_id, "Invalid param on position $i!");
+//                return;
+//            }
+//        }
+
+        $date = "$args[0] $args[1] $args[2] $args[3] $args[4]";
+        $id = $user_id; // TODO: generate it
+        $name = join(" ", array_slice($args, 5));
         $deadline = new Deadline($id, $user_id, $date, $name);
+
+        $this->db->add($deadline);
         $command = Utils::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getUserId());
         Utils::addCrontabTask($command);
 
-        $this->vkApi->messages()->send(BOT_TOKEN, [
-            "peer_id" => $deadline->getUserId(),
-            "random_id" => random_int(0, PHP_INT_MAX),
-            "message" => "Deadline has been successfully set!",
-        ]);
+        $this->sendMessage($user_id, "Deadline \"$name\" has been successfully set!");
     }
 }

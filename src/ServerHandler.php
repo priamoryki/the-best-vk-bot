@@ -6,8 +6,9 @@ use Bot\Commands\Chat\CatCommand;
 use Bot\Commands\Chat\HelloCommand;
 use Bot\Commands\CommandsStorage;
 use Bot\Commands\Deadline\GetDeadlines;
+use Bot\Commands\Deadline\ResetDeadline;
 use Bot\Commands\Deadline\SetDeadline;
-use Bot\Commands\Utils\VKAdvancedAPI;
+use Bot\Utils\VKAdvancedAPI;
 use VK\CallbackApi\Server\VKCallbackApiServerHandler;
 
 class ServerHandler extends VKCallbackApiServerHandler
@@ -22,6 +23,7 @@ class ServerHandler extends VKCallbackApiServerHandler
             new HelloCommand($this->vkApi),
             new CatCommand($this->vkApi),
             new SetDeadline($this->vkApi),
+            new ResetDeadline($this->vkApi),
             new GetDeadlines($this->vkApi),
         );
     }

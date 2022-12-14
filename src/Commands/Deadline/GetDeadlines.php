@@ -2,16 +2,13 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Commands\Command;
-use Bot\Commands\Utils\VKAdvancedAPI;
+use Bot\Utils\VKAdvancedAPI;
 
-class GetDeadlines implements Command
+class GetDeadlines extends DeadlineCommand
 {
-    private VKAdvancedAPI $vkApi;
-
     public function __construct(VKAdvancedAPI $vkApi)
     {
-        $this->vkApi = $vkApi;
+        parent::__construct($vkApi);
     }
 
     public function getNames(): array
@@ -26,11 +23,14 @@ class GetDeadlines implements Command
 
     public function execute(int $user_id, array $args): void
     {
-        // TODO: Implement execute() method.
-        $this->vkApi->messages()->send(BOT_TOKEN, [
-            "peer_id" => $user_id,
-            "random_id" => random_int(0, PHP_INT_MAX),
-            "message" => "It's not working yet!",
-        ]);
+        $deadlines = $this->db->getByUserId($user_id);
+        $result = "";
+        foreach ($deadlines as $deadline) {
+            $id = $deadline->getId();
+            $date = $deadline->getDate();
+            $name = $deadline->getName();
+            $result .= "name: $name, date: $date, id: $id\n";
+        }
+        $this->sendMessage($user_id, $result);
     }
 }

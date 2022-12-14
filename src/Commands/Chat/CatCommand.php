@@ -2,19 +2,17 @@
 
 namespace Bot\Commands\Chat;
 
-use Bot\Commands\Command;
-use Bot\Commands\Utils\QuotesAPI;
-use Bot\Commands\Utils\VKAdvancedAPI;
+use Bot\Commands\VKCommand;
+use Bot\Utils\VKAdvancedAPI;
 use CataasApiPhp\CataasApiPhp;
 
-class CatCommand implements Command
+class CatCommand extends VKCommand
 {
-    private VKAdvancedAPI $vkApi;
     private CataasApiPhp $cataas;
 
     public function __construct(VKAdvancedAPI $vkApi)
     {
-        $this->vkApi = $vkApi;
+        parent::__construct($vkApi);
         $this->cataas = CataasApiPhp::factory();
     }
 
@@ -30,8 +28,6 @@ class CatCommand implements Command
 
     public function execute(int $user_id, array $args): void
     {
-        // TODO
-        $quote = QuotesAPI::getRandomQuote();
         $text = join(" ", $args);
         $filename = "/var/tmp/the-best-vk-bot.png";
         $this->cataas->says($text)->get($filename);
@@ -47,10 +43,10 @@ class CatCommand implements Command
 
     private function uploadPhoto(int $user_id, string $filename)
     {
-        $uploadLink = $this->vkApi->photos()->getMessagesUploadServer(BOT_TOKEN, [
+        $upload_link = $this->vkApi->photos()->getMessagesUploadServer(BOT_TOKEN, [
             "peer_id" => $user_id,
         ]);
-        $upload_response = $this->vkApi->uploadPhoto($uploadLink, $filename);
+        $upload_response = $this->vkApi->uploadPhoto($upload_link, $filename);
         $save_response = $this->vkApi->photos()->saveMessagesPhoto(BOT_TOKEN, [
             "photo" => $upload_response["photo"],
             "server" => $upload_response["server"],
