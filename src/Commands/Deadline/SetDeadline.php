@@ -40,14 +40,14 @@ class SetDeadline extends DeadlineCommand
         // TODO: check deadline is active
 
         $date = "$args[0] $args[1] $args[2] $args[3] $args[4]";
-        $id = $user_id; // TODO: generate it
         $name = join(" ", array_slice($args, 5));
-        $deadline = new Deadline($id, $user_id, $date, $name);
 
-        $this->db->add($deadline);
-        $command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getUserId());
+        $deadline = new Deadline(0, $user_id, $date, $name);
+        $deadline = $this->db->add($deadline);
+        $command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
         Crontab::addTask($command);
 
-        $this->sendMessage($user_id, "Deadline \"$name\" has been successfully set!");
+        $id = $deadline->getId();
+        $this->sendMessage($user_id, "Deadline \"$name\" with id $id has been successfully set!");
     }
 }
