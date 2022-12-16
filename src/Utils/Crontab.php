@@ -2,18 +2,18 @@
 
 namespace Bot\Utils;
 
-class Utils
+class Crontab
 {
     private static string $crontab = "crontab -u www-data";
     private static string $path = "/home/ubuntu/the-best-vk-bot/src/Commands/Deadline/DeadlineNotification.php";
 
-    public static function addCrontabTask(string $command)
+    public static function addTask(string $command)
     {
         $crontab = self::$crontab;
         shell_exec("($crontab -l && echo \"$command\") | $crontab -");
     }
 
-    public static function removeCrontabTask(string $command)
+    public static function removeTask(string $command)
     {
         $crontab = self::$crontab;
         shell_exec("$crontab -l | grep -v \"$command\" | $crontab -");

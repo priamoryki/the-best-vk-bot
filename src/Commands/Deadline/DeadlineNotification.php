@@ -7,8 +7,8 @@ require_once "/home/ubuntu/the-best-vk-bot/src/config.php";
 
 use Bot\Commands\Chat\CatCommand;
 use Bot\Repositories\DeadlinesRepository;
+use Bot\Utils\Crontab;
 use Bot\Utils\QuotesAPI;
-use Bot\Utils\Utils;
 use Bot\Utils\VKAdvancedAPI;
 
 $vkApi = new VKAdvancedAPI("5.130");
@@ -29,5 +29,5 @@ $quote = QuotesAPI::getRandomQuote();
 $catCommand->execute($deadline->getUserId(), preg_split("/\s+/", $quote));
 
 $db->removeById($deadline->getId());
-$command = Utils::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
-Utils::removeCrontabTask($command);
+$command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
+Crontab::removeTask($command);

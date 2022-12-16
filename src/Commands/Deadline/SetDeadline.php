@@ -2,7 +2,8 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Utils\Utils;
+use Bot\Repositories\Entities\Deadline;
+use Bot\Utils\Crontab;
 use Bot\Utils\VKAdvancedAPI;
 
 class SetDeadline extends DeadlineCommand
@@ -30,12 +31,13 @@ class SetDeadline extends DeadlineCommand
             $this->sendMessage($user_id, "Not enough arguments! $this->inputFormat");
             return;
         }
-//        for ($i = 0; $i < 5; $i++) {
-//            if (!is_numeric($args[$i])) {
-//                $this->sendMessage($user_id, "Invalid param on position $i!");
-//                return;
-//            }
-//        }
+        for ($i = 0; $i < 5; $i++) {
+            if (!is_numeric($args[$i])) {
+                $this->sendMessage($user_id, "Invalid param on position $i!");
+                return;
+            }
+        }
+        // TODO: check deadline is active
 
         $date = "$args[0] $args[1] $args[2] $args[3] $args[4]";
         $id = $user_id; // TODO: generate it
@@ -43,8 +45,8 @@ class SetDeadline extends DeadlineCommand
         $deadline = new Deadline($id, $user_id, $date, $name);
 
         $this->db->add($deadline);
-        $command = Utils::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getUserId());
-        Utils::addCrontabTask($command);
+        $command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getUserId());
+        Crontab::addTask($command);
 
         $this->sendMessage($user_id, "Deadline \"$name\" has been successfully set!");
     }

@@ -46,7 +46,11 @@ class CatCommand extends VKCommand
         $upload_link = $this->vkApi->photos()->getMessagesUploadServer(BOT_TOKEN, [
             "peer_id" => $user_id,
         ]);
-        $upload_response = $this->vkApi->uploadPhoto($upload_link, $filename);
+        $upload_response = $this->vkApi->getRequest()->upload(
+            $upload_link["upload_url"],
+            "photo",
+            $filename
+        );
         $save_response = $this->vkApi->photos()->saveMessagesPhoto(BOT_TOKEN, [
             "photo" => $upload_response["photo"],
             "server" => $upload_response["server"],

@@ -2,7 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Utils\Utils;
+use Bot\Utils\Crontab;
 use Bot\Utils\VKAdvancedAPI;
 
 class ResetDeadline extends DeadlineCommand
@@ -31,8 +31,12 @@ class ResetDeadline extends DeadlineCommand
         $id = intval($args[0]);
         $deadline = $this->db->getById($id);
 
-        $this->db->removeById($id);
-        $command = Utils::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
-        Utils::removeCrontabTask($command);
+        $this->db->removeById($deadline->getId());
+        $command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
+        Crontab::removeTask($command);
+
+        $id = $deadline->getId();
+        $name = $deadline->getName();
+        $this->sendMessage($user_id, "Your deadline \"$name (id: $id)\" has been deleted!");
     }
 }

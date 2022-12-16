@@ -2,7 +2,7 @@
 
 namespace Bot\Repositories;
 
-use Bot\Commands\Deadline\Deadline;
+use Bot\Repositories\Entities\Deadline;
 use SQLite3;
 
 class DeadlinesRepository
@@ -11,7 +11,7 @@ class DeadlinesRepository
 
     public function __construct()
     {
-        $this->connection = new SQLite3("/home/ubuntu/the-best-vk-bot/data/deadlines");
+        $this->connection = new SQLite3(DEADLINES_DB_HOST);
     }
 
     public function getById(int $id): Deadline
