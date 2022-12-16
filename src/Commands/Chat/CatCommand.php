@@ -34,11 +34,7 @@ class CatCommand extends VKCommand
 
         $photo = $this->uploadPhoto($user_id, $filename);
 
-        $this->vkApi->messages()->send(BOT_TOKEN, [
-            "peer_id" => $user_id,
-            "random_id" => random_int(0, PHP_INT_MAX),
-            "attachment" => "photo" . $photo["owner_id"] . "_" . $photo["id"],
-        ]);
+        $this->sendMessage($user_id, "", "photo" . $photo["owner_id"] . "_" . $photo["id"]);
     }
 
     private function uploadPhoto(int $user_id, string $filename)

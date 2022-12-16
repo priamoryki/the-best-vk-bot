@@ -4,6 +4,7 @@ namespace Bot;
 
 use Bot\Commands\Chat\CatCommand;
 use Bot\Commands\Chat\HelloCommand;
+use Bot\Commands\Chat\HelpCommand;
 use Bot\Commands\CommandsStorage;
 use Bot\Commands\Deadline\GetDeadlines;
 use Bot\Commands\Deadline\ResetDeadline;
@@ -25,6 +26,9 @@ class ServerHandler extends VKCallbackApiServerHandler
             new SetDeadline($this->vkApi),
             new ResetDeadline($this->vkApi),
             new GetDeadlines($this->vkApi),
+        );
+        $this->storage->addCommands(
+            new HelpCommand($this->vkApi, $this->storage),
         );
     }
 
