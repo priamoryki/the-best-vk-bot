@@ -1,6 +1,6 @@
 <?php
 
-namespace Bot\Repositories\Entities;
+namespace Bot\Entities;
 
 class Deadline
 {

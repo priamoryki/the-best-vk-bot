@@ -2,7 +2,7 @@
 
 namespace Bot\Repositories;
 
-use Bot\Repositories\Entities\Deadline;
+use Bot\Entities\Deadline;
 use SQLite3;
 
 class DeadlinesRepository
@@ -25,10 +25,15 @@ class DeadlinesRepository
 
     public function add(Deadline $deadline): Deadline
     {
+        $id = $deadline->getId();
         $user_id = $deadline->getUserId();
         $name = $deadline->getName();
         $date = $deadline->getDate();
         $stmt = $this->connection->prepare("INSERT INTO deadlines (user_id, name, date) VALUES (:user_id, :name, :date)");
+        if ($id > 0) {
+            $stmt = $this->connection->prepare("INSERT INTO deadlines (id, user_id, name, date) VALUES (:id, :user_id, :name, :date)");
+        }
+        $stmt->bindParam(":id", $id, SQLITE3_INTEGER);
         $stmt->bindParam(":user_id", $user_id, SQLITE3_INTEGER);
         $stmt->bindParam(":name", $name);
         $stmt->bindParam(":date", $date);

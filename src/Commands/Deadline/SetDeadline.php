@@ -2,7 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Repositories\Entities\Deadline;
+use Bot\Entities\Deadline;
 use Bot\Utils\Crontab;
 use Bot\Utils\VKAdvancedAPI;
 

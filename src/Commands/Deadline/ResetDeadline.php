@@ -31,12 +31,16 @@ class ResetDeadline extends DeadlineCommand
         $id = intval($args[0]);
         $deadline = $this->db->getById($id);
 
+        if ($deadline->getUserId() != $user_id) {
+            $this->sendMessage($user_id, "You don't have deadline with given id!");
+        }
+
         $this->db->removeById($deadline->getId());
         $command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
         Crontab::removeTask($command);
 
         $id = $deadline->getId();
         $name = $deadline->getName();
-        $this->sendMessage($user_id, "Your deadline \"$name (id: $id)\" has been deleted!");
+        $this->sendMessage($user_id, "Your deadline \"$name\" with id $id has been deleted!");
     }
 }
