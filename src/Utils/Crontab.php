@@ -21,12 +21,8 @@ class Crontab
 
     public static function getDeadlineNotificationCommand(int $timestamp, int $id): string
     {
-        $min = date('i', $timestamp);
-        $hour = date('H', $timestamp);
-        $day = date('d', $timestamp);
-        $month = date('m', $timestamp);
-        $weekday = date('N', $timestamp) - 1;
         $path = self::$path;
-        return "$min $hour $day $month $weekday php $path $id >> /var/tmp/text.txt 2>&1";
+        $crontab_date = date("i H d m N", $timestamp);
+        return "$crontab_date php $path $id >> /var/tmp/text.txt 2>&1";
     }
 }
