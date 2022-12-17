@@ -19,6 +19,10 @@ $db = new DeadlinesRepository();
 $id = intval($argv[1]);
 $deadline = $db->getById($id);
 
+if (time() < $deadline->getTimestamp()) {
+    return;
+}
+
 $name = $deadline->getName();
 $vkApi->messages()->send(BOT_TOKEN, [
     "user_id" => $deadline->getUserId(),
@@ -28,7 +32,7 @@ $vkApi->messages()->send(BOT_TOKEN, [
 ]);
 
 $catCommand = new CatCommand($vkApi);
-$quote = QuotesAPI::getRandomQuote();
+$quote = wordwrap(QuotesAPI::getRandomQuote(), 35, "%0A");
 $catCommand->execute($deadline->getUserId(), preg_split("/\s+/", $quote));
 
 $db->removeById($deadline->getId());

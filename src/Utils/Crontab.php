@@ -21,9 +21,8 @@ class Crontab
 
     public static function getDeadlineNotificationCommand(int $timestamp, int $id): string
     {
-        // TODO: check year in crontab
         $path = self::$path;
-        $crontab_date = date('i H d m N', $timestamp);
+        $crontab_date = date("i H d m N", $timestamp);
         return "$crontab_date php $path $id >> /var/tmp/text.txt 2>&1";
     }
 }
