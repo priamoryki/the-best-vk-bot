@@ -10,6 +10,7 @@ use Bot\Commands\Config\SetTimezone;
 use Bot\Commands\Deadline\GetDeadlines;
 use Bot\Commands\Deadline\ResetDeadline;
 use Bot\Commands\Deadline\SetDeadline;
+use Bot\Utils\Keyboard;
 use Bot\Utils\VKAdvancedAPI;
 use VK\CallbackApi\Server\VKCallbackApiServerHandler;
 
@@ -60,6 +61,7 @@ class ServerHandler extends VKCallbackApiServerHandler
                 "user_id" => $user_id,
                 "random_id" => random_int(0, PHP_INT_MAX),
                 "message" => "Command not found!",
+                "keyboard" => Keyboard::getButtons(),
             ]);
         }
 

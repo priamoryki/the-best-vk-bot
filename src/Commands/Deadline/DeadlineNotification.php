@@ -9,6 +9,7 @@ require_once "/home/ubuntu/the-best-vk-bot/src/config.php";
 use Bot\Commands\Chat\CatCommand;
 use Bot\Repositories\DeadlinesRepository;
 use Bot\Utils\Crontab;
+use Bot\Utils\Keyboard;
 use Bot\Utils\QuotesAPI;
 use Bot\Utils\VKAdvancedAPI;
 
@@ -23,6 +24,7 @@ $vkApi->messages()->send(BOT_TOKEN, [
     "user_id" => $deadline->getUserId(),
     "random_id" => random_int(0, PHP_INT_MAX),
     "message" => "Deadline \"$name\" is coming! It's time for hard work!",
+    "keyboard" => Keyboard::getButtons(),
 ]);
 
 $catCommand = new CatCommand($vkApi);
