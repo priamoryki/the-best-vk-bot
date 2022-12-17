@@ -2,21 +2,19 @@
 
 namespace Bot\Commands\Chat;
 
-use Bot\Commands\Command;
-use VK\Client\VKApiClient;
+use Bot\Commands\VKCommand;
+use Bot\Utils\VKAdvancedAPI;
 
-class HelloCommand implements Command
+class HelloCommand extends VKCommand
 {
-    private VKApiClient $vkApi;
-
-    public function __construct(VKApiClient $vkApi)
+    public function __construct(VKAdvancedAPI $vkApi)
     {
-        $this->vkApi = $vkApi;
+        parent::__construct($vkApi);
     }
 
-    public function getName(): string
+    public function getNames(): array
     {
-        return "hello";
+        return ["hello"];
     }
 
     public function getDescription(): string
@@ -31,10 +29,6 @@ class HelloCommand implements Command
         ]);
         $user = $users_get_response[0];
 
-        $this->vkApi->messages()->send(BOT_TOKEN, [
-            "peer_id" => $user_id,
-            "random_id" => random_int(0, PHP_INT_MAX),
-            "message" => "Hello, ${user["first_name"]}!",
-        ]);
+        $this->sendMessage($user_id, "Hello, ${user["first_name"]}!");
     }
 }

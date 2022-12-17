@@ -4,21 +4,34 @@ namespace Bot;
 
 use Bot\Commands\Chat\CatCommand;
 use Bot\Commands\Chat\HelloCommand;
+use Bot\Commands\Chat\HelpCommand;
 use Bot\Commands\CommandsStorage;
+use Bot\Commands\Config\SetTimezone;
+use Bot\Commands\Deadline\GetDeadlines;
+use Bot\Commands\Deadline\ResetDeadline;
+use Bot\Commands\Deadline\SetDeadline;
+use Bot\Utils\Keyboard;
+use Bot\Utils\VKAdvancedAPI;
 use VK\CallbackApi\Server\VKCallbackApiServerHandler;
-use VK\Client\VKApiClient;
 
 class ServerHandler extends VKCallbackApiServerHandler
 {
-    private VKApiClient $vkApi;
+    private VKAdvancedAPI $vkApi;
     private CommandsStorage $storage;
 
     public function __construct()
     {
-        $this->vkApi = new VKApiClient("5.130");
+        $this->vkApi = new VKAdvancedAPI("5.130");
         $this->storage = new CommandsStorage(
             new HelloCommand($this->vkApi),
             new CatCommand($this->vkApi),
+            new SetTimezone($this->vkApi),
+            new SetDeadline($this->vkApi),
+            new ResetDeadline($this->vkApi),
+            new GetDeadlines($this->vkApi),
+        );
+        $this->storage->addCommands(
+            new HelpCommand($this->vkApi, $this->storage),
         );
     }
 
@@ -48,6 +61,7 @@ class ServerHandler extends VKCallbackApiServerHandler
                 "user_id" => $user_id,
                 "random_id" => random_int(0, PHP_INT_MAX),
                 "message" => "Command not found!",
+                "keyboard" => Keyboard::getButtons(),
             ]);
         }
 

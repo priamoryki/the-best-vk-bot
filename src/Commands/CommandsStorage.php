@@ -2,8 +2,6 @@
 
 namespace Bot\Commands;
 
-use Exception;
-
 class CommandsStorage
 {
     private array $commands;
@@ -16,7 +14,9 @@ class CommandsStorage
 
     public function addCommand(Command $command): void
     {
-        $this->commands[$command->getName()] = $command;
+        foreach ($command->getNames() as $name) {
+            $this->commands[$name] = $command;
+        }
     }
 
     public function addCommands(Command ...$commands): void
