@@ -8,11 +8,11 @@ use Bot\Utils\VKAdvancedAPI;
 
 abstract class DeadlineCommand extends VKCommand
 {
-    protected DeadlinesRepository $db;
+    protected DeadlinesRepository $deadlinesRepository;
 
     public function __construct(VKAdvancedAPI $vkApi)
     {
         parent::__construct($vkApi);
-        $this->db = new DeadlinesRepository();
+        $this->deadlinesRepository = new DeadlinesRepository();
     }
 }

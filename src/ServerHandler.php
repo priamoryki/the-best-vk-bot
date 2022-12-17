@@ -6,6 +6,7 @@ use Bot\Commands\Chat\CatCommand;
 use Bot\Commands\Chat\HelloCommand;
 use Bot\Commands\Chat\HelpCommand;
 use Bot\Commands\CommandsStorage;
+use Bot\Commands\Config\SetTimezone;
 use Bot\Commands\Deadline\GetDeadlines;
 use Bot\Commands\Deadline\ResetDeadline;
 use Bot\Commands\Deadline\SetDeadline;
@@ -23,6 +24,7 @@ class ServerHandler extends VKCallbackApiServerHandler
         $this->storage = new CommandsStorage(
             new HelloCommand($this->vkApi),
             new CatCommand($this->vkApi),
+            new SetTimezone($this->vkApi),
             new SetDeadline($this->vkApi),
             new ResetDeadline($this->vkApi),
             new GetDeadlines($this->vkApi),

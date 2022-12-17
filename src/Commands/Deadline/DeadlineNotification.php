@@ -15,7 +15,7 @@ use Bot\Utils\VKAdvancedAPI;
 $vkApi = new VKAdvancedAPI("5.130");
 $db = new DeadlinesRepository();
 
-$id = $argv[1];
+$id = intval($argv[1]);
 $deadline = $db->getById($id);
 
 $name = $deadline->getName();
@@ -30,5 +30,5 @@ $quote = QuotesAPI::getRandomQuote();
 $catCommand->execute($deadline->getUserId(), preg_split("/\s+/", $quote));
 
 $db->removeById($deadline->getId());
-$command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
+$command = Crontab::getDeadlineNotificationCommand($deadline->getTimestamp(), $deadline->getId());
 Crontab::removeTask($command);

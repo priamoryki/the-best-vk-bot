@@ -23,13 +23,13 @@ class GetDeadlines extends DeadlineCommand
 
     public function execute(int $user_id, array $args): void
     {
-        $deadlines = $this->db->getByUserId($user_id);
+        $deadlines = $this->deadlinesRepository->getByUserId($user_id);
         $result = "";
         foreach ($deadlines as $deadline) {
             $id = $deadline->getId();
-            $date = $deadline->getDate();
+            $timestamp = $deadline->getTimestamp();
             $name = $deadline->getName();
-            $result .= "name: $name, date: $date, id: $id\n";
+            $result .= "name: $name, timestamp: $timestamp, id: $id\n";
         }
         if (strlen($result) == 0) {
             $result = "You don't have active deadlines!";

@@ -6,4 +6,4 @@ define("GROUP_ID", getenv("VK_GROUP_ID"));
 define("BOT_TOKEN", getenv("VK_BOT_TOKEN"));
 define("API_CONFIRMATION_TOKEN", getenv("VK_API_CONFIRMATION_TOKEN"));
 define("GROUP_SECRET", getenv("VK_GROUP_SECRET"));
-define("DEADLINES_DB_HOST", getenv("VK_DEADLINES_DB_HOST"));
+define("MAIN_DB_HOST", getenv("VK_MAIN_DB_HOST"));

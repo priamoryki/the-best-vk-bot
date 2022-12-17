@@ -6,14 +6,14 @@ class Deadline
 {
     private int $id;
     private int $user_id;
+    private int $timestamp;
     private string $name;
-    private string $date;
 
-    public function __construct(int $id, int $user_id, string $date, string $name)
+    public function __construct(int $id, int $user_id, int $timestamp, string $name)
     {
         $this->id = $id;
         $this->user_id = $user_id;
-        $this->date = $date;
+        $this->timestamp = $timestamp;
         $this->name = $name;
     }
 
@@ -34,18 +34,18 @@ class Deadline
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getName(): string
+    public function getTimestamp(): int
     {
-        return $this->name;
+        return $this->timestamp;
     }
 
     /**
      * @return string
      */
-    public function getDate(): string
+    public function getName(): string
     {
-        return $this->date;
+        return $this->name;
     }
 }

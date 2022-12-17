@@ -19,9 +19,14 @@ class Crontab
         shell_exec("$crontab -l | grep -v \"$command\" | $crontab -");
     }
 
-    public static function getDeadlineNotificationCommand(string $date, int $id): string
+    public static function getDeadlineNotificationCommand(int $timestamp, int $id): string
     {
+        $min = date('i', $timestamp);
+        $hour = date('H', $timestamp);
+        $day = date('d', $timestamp);
+        $month = date('m', $timestamp);
+        $weekday = date('N', $timestamp) - 1;
         $path = self::$path;
-        return "$date php $path $id >> /var/tmp/text.txt 2>&1";
+        return "$min $hour $day $month $weekday php $path $id >> /var/tmp/text.txt 2>&1";
     }
 }

@@ -27,16 +27,19 @@ class ResetDeadline extends DeadlineCommand
         if (count($args) < 1) {
             $this->sendMessage($user_id, "Not enough arguments!");
         }
+        if (!is_numeric($args[0])) {
+            $this->sendMessage($user_id, "Id argument is not int!");
+        }
 
         $id = intval($args[0]);
-        $deadline = $this->db->getById($id);
+        $deadline = $this->deadlinesRepository->getById($id);
 
         if ($deadline->getUserId() != $user_id) {
             $this->sendMessage($user_id, "You don't have deadline with given id!");
         }
 
-        $this->db->removeById($deadline->getId());
-        $command = Crontab::getDeadlineNotificationCommand($deadline->getDate(), $deadline->getId());
+        $this->deadlinesRepository->removeById($deadline->getId());
+        $command = Crontab::getDeadlineNotificationCommand($deadline->getTimestamp(), $deadline->getId());
         Crontab::removeTask($command);
 
         $id = $deadline->getId();

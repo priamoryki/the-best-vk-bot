@@ -11,7 +11,7 @@ class DeadlinesRepository
 
     public function __construct()
     {
-        $this->connection = new SQLite3(DEADLINES_DB_HOST);
+        $this->connection = new SQLite3(MAIN_DB_HOST);
     }
 
     public function getById(int $id): Deadline
@@ -20,7 +20,7 @@ class DeadlinesRepository
         $stmt->bindParam(":id", $id, SQLITE3_INTEGER);
         $result = $stmt->execute();
         $row = $result->fetchArray();
-        return new Deadline($row["id"], $row["user_id"], $row["date"], $row["name"]);
+        return new Deadline($row["id"], $row["user_id"], $row["timestamp"], $row["name"]);
     }
 
     public function add(Deadline $deadline): Deadline
@@ -28,17 +28,14 @@ class DeadlinesRepository
         $id = $deadline->getId();
         $user_id = $deadline->getUserId();
         $name = $deadline->getName();
-        $date = $deadline->getDate();
-        $stmt = $this->connection->prepare("INSERT INTO deadlines (user_id, name, date) VALUES (:user_id, :name, :date)");
-        if ($id > 0) {
-            $stmt = $this->connection->prepare("INSERT INTO deadlines (id, user_id, name, date) VALUES (:id, :user_id, :name, :date)");
-        }
+        $timestamp = $deadline->getTimestamp();
+        $stmt = $this->connection->prepare("INSERT INTO deadlines (user_id, name, timestamp) VALUES (:user_id, :name, :timestamp)");
         $stmt->bindParam(":id", $id, SQLITE3_INTEGER);
         $stmt->bindParam(":user_id", $user_id, SQLITE3_INTEGER);
         $stmt->bindParam(":name", $name);
-        $stmt->bindParam(":date", $date);
+        $stmt->bindParam(":timestamp", $timestamp);
         $result = $stmt->execute();
-        return new Deadline($this->connection->lastInsertRowID(), $user_id, $date, $name);
+        return new Deadline($this->connection->lastInsertRowID(), $user_id, $timestamp, $name);
     }
 
     public function removeById(int $id): void
@@ -55,7 +52,7 @@ class DeadlinesRepository
         $result = $stmt->execute();
         $arr = [];
         while ($row = $result->fetchArray()) {
-            $arr[] = new Deadline($row["id"], $row["user_id"], $row["date"], $row["name"]);
+            $arr[] = new Deadline($row["id"], $row["user_id"], $row["timestamp"], $row["name"]);
         }
         return $arr;
     }
