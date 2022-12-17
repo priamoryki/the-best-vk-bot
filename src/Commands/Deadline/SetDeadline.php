@@ -11,8 +11,8 @@ use DateTime;
 class SetDeadline extends DeadlineCommand
 {
     private int $TIME_ARGS_NUMBER = 2;
-    private string $TIME_FORMAT = "i:H d-m-Y";
-    private string $inputFormat = "Input format: min:hour day-mon-year name.";
+    private string $TIME_FORMAT = "H:i d-m-Y";
+    private string $inputFormat = "Input format: hour:min day-mon-year name.";
     private TimezonesRepository $timezonesRepository;
 
     public function __construct(VKAdvancedAPI $vkApi)

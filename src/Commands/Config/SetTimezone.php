@@ -36,8 +36,12 @@ class SetTimezone extends VKCommand
             $this->sendMessage($user_id, "Timezone argument is not int!");
             return;
         }
-
         $timezone = intval($args[0]);
+        if (12 < $timezone || $timezone < -12) {
+            $this->sendMessage($user_id, "Timezone is not in range [-12, 12]!");
+            return;
+        }
+
         $this->timezonesRepository->add($user_id, $timezone);
 
         $this->sendMessage($user_id, "Timezone $timezone has been successfully set!");
