@@ -2,13 +2,18 @@
 
 namespace Bot\Commands\Deadline;
 
+use Bot\Repositories\TimezonesRepository;
 use Bot\Utils\VKAdvancedAPI;
 
 class GetDeadlines extends DeadlineCommand
 {
+    private string $TIME_FORMAT = "H:i d-m-Y";
+    private TimezonesRepository $timezonesRepository;
+
     public function __construct(VKAdvancedAPI $vkApi)
     {
         parent::__construct($vkApi);
+        $this->timezonesRepository = new TimezonesRepository();
     }
 
     public function getNames(): array
@@ -23,13 +28,14 @@ class GetDeadlines extends DeadlineCommand
 
     public function execute(int $user_id, array $args): void
     {
+        $timezone = $this->timezonesRepository->getByUserId($user_id);
         $deadlines = $this->deadlinesRepository->getByUserId($user_id);
         $result = "";
         foreach ($deadlines as $deadline) {
             $id = $deadline->getId();
-            $timestamp = $deadline->getTimestamp();
+            $timestamp = date($this->TIME_FORMAT, $deadline->getTimestamp() + 60 * 60 * $timezone);
             $name = $deadline->getName();
-            $result .= "name: $name, timestamp: $timestamp, id: $id\n";
+            $result .= "name: $name, date: $timestamp, id: $id\n";
         }
         if (strlen($result) == 0) {
             $result = "You don't have active deadlines!";
