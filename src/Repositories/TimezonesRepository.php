@@ -15,7 +15,7 @@ class TimezonesRepository
 
     public function add(int $user_id, int $timezone): void
     {
-        $stmt = $this->connection->prepare("INSERT INTO timezones (user_id, timezone) VALUES (:user_id, :timezone)");
+        $stmt = $this->connection->prepare("INSERT INTO timezones (user_id, timezone) VALUES (:user_id, :timezone) ON CONFLICT(user_id) DO UPDATE SET timezone = :timezone");
         $stmt->bindParam(":user_id", $user_id, SQLITE3_INTEGER);
         $stmt->bindParam(":timezone", $timezone, SQLITE3_INTEGER);
         $result = $stmt->execute();
