@@ -36,7 +36,7 @@ class ResetDeadline extends DeadlineCommand
         $deadline = $this->deadlinesRepository->getById($id);
 
         if ($deadline->getUserId() != $user_id) {
-            $this->sendMessage($user_id, "You don't have deadline with given id!");
+            throw new CommandException("You don't have deadline with given id!");
         }
 
         $this->deadlinesRepository->removeById($deadline->getId());
