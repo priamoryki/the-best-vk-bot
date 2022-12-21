@@ -2,6 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
+use Bot\Entities\Deadline;
 use Bot\Repositories\TimezonesRepository;
 use Bot\Utils\VKAdvancedAPI;
 
@@ -30,10 +31,9 @@ class GetDeadlines extends DeadlineCommand
     {
         $timezone = $this->timezonesRepository->getByUserId($user_id);
         $deadlines = $this->deadlinesRepository->getByUserId($user_id);
-        $result = "";
         usort(
             $deadlines,
-            function ($a, $b) {
+            function (Deadline $a, Deadline $b) {
                 $a_timestamp = $a->getTimestamp();
                 $b_timestamp = $b->getTimestamp();
                 if ($a_timestamp == $b_timestamp) {
@@ -42,6 +42,7 @@ class GetDeadlines extends DeadlineCommand
                 return $a_timestamp < $b_timestamp ? -1 : 1;
             }
         );
+        $result = "";
         foreach ($deadlines as $deadline) {
             $id = $deadline->getId();
             $timestamp = date($this->TIME_FORMAT, $deadline->getTimestamp() + 60 * 60 * $timezone);
