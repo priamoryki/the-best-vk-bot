@@ -8,6 +8,7 @@ class Deadline
     private int $user_id;
     private int $timestamp;
     private string $name;
+    private string $path = "/home/ubuntu/the-best-vk-bot/src/Commands/Deadline/DeadlineNotification.php";
 
     public function __construct(int $id, int $user_id, int $timestamp, string $name)
     {
@@ -47,5 +48,11 @@ class Deadline
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getCrontabCommand(): string
+    {
+        $crontab_date = date("i H d m N", $this->timestamp);
+        return "$crontab_date php $this->path $this->id >> /var/tmp/text.txt 2>&1";
     }
 }

@@ -56,8 +56,7 @@ class SetDeadline extends DeadlineCommand
 
         $deadline = new Deadline(0, $user_id, $timestamp, join(" ", array_slice($args, $this->TIME_ARGS_NUMBER)));
         $deadline = $this->deadlinesRepository->add($deadline);
-        $command = Crontab::getDeadlineNotificationCommand($deadline->getTimestamp(), $deadline->getId());
-        Crontab::addTask($command);
+        Crontab::addTask($deadline->getCrontabCommand());
 
         $id = $deadline->getId();
         $name = $deadline->getName();

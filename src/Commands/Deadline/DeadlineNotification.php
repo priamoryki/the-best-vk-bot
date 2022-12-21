@@ -36,5 +36,4 @@ $quote = wordwrap(QuotesAPI::getRandomQuote(), 35, "%0A");
 $catCommand->execute($deadline->getUserId(), preg_split("/\s+/", $quote));
 
 $db->removeById($deadline->getId());
-$command = Crontab::getDeadlineNotificationCommand($deadline->getTimestamp(), $deadline->getId());
-Crontab::removeTask($command);
+Crontab::removeTask($deadline->getCrontabCommand());

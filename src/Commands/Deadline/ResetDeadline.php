@@ -39,8 +39,7 @@ class ResetDeadline extends DeadlineCommand
         }
 
         $this->deadlinesRepository->removeById($deadline->getId());
-        $command = Crontab::getDeadlineNotificationCommand($deadline->getTimestamp(), $deadline->getId());
-        Crontab::removeTask($command);
+        Crontab::removeTask($deadline->getCrontabCommand());
 
         $id = $deadline->getId();
         $name = $deadline->getName();

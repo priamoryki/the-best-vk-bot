@@ -6,6 +6,9 @@
     "ext-curl": "*",
     "ext-sqlite3": "*"
   },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
   "autoload": {
     "psr-4": {
       "Bot\\": "src/"
