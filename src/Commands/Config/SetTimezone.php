@@ -3,6 +3,7 @@
 namespace Bot\Commands\Config;
 
 use Bot\Commands\VKCommand;
+use Bot\Entities\CommandException;
 use Bot\Repositories\TimezonesRepository;
 use Bot\Utils\VKAdvancedAPI;
 
@@ -29,17 +30,14 @@ class SetTimezone extends VKCommand
     public function execute(int $user_id, array $args): void
     {
         if (count($args) < 1) {
-            $this->sendMessage($user_id, "Not enough arguments!");
-            return;
+            throw new CommandException("Not enough arguments!");
         }
         if (!is_numeric($args[0])) {
-            $this->sendMessage($user_id, "Timezone argument is not int!");
-            return;
+            throw new CommandException("Timezone argument is not int!");
         }
         $timezone = intval($args[0]);
         if (12 < $timezone || $timezone < -12) {
-            $this->sendMessage($user_id, "Timezone is not in range [-12, 12]!");
-            return;
+            throw new CommandException("Timezone is not in range [-12, 12]!");
         }
 
         $this->timezonesRepository->add($user_id, $timezone);

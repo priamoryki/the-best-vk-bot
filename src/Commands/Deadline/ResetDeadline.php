@@ -2,6 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
+use Bot\Entities\CommandException;
 use Bot\Utils\Crontab;
 use Bot\Utils\VKAdvancedAPI;
 
@@ -25,10 +26,10 @@ class ResetDeadline extends DeadlineCommand
     public function execute(int $user_id, array $args): void
     {
         if (count($args) < 1) {
-            $this->sendMessage($user_id, "Not enough arguments!");
+            throw new CommandException("Not enough arguments!");
         }
         if (!is_numeric($args[0])) {
-            $this->sendMessage($user_id, "Id argument is not int!");
+            throw new CommandException("Id argument is not int!");
         }
 
         $id = intval($args[0]);

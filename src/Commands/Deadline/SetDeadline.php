@@ -2,6 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
+use Bot\Entities\CommandException;
 use Bot\Entities\Deadline;
 use Bot\Repositories\TimezonesRepository;
 use Bot\Utils\Crontab;
@@ -34,24 +35,20 @@ class SetDeadline extends DeadlineCommand
     public function execute(int $user_id, array $args): void
     {
         if (count($args) < $this->TIME_ARGS_NUMBER + 1) {
-            $this->sendMessage($user_id, "Not enough arguments! $this->inputFormat");
-            return;
+            throw new CommandException("Not enough arguments! $this->inputFormat");
         }
         $date = DateTime::createFromFormat($this->TIME_FORMAT, "$args[0] $args[1]");
         if ($date === false) {
-            $this->sendMessage($user_id, "Invalid date param");
-            return;
+            throw new CommandException("Invalid date param");
         }
         $timezone = $this->timezonesRepository->getByUserId($user_id);
         if ($timezone == null) {
-            $this->sendMessage($user_id, "Your timezone isn't set! Use set_timezone command!");
-            return;
+            throw new CommandException("Your timezone isn't set! Use set_timezone command!");
         }
         $date = $date->setTimestamp($date->getTimestamp() - 60 * 60 * $timezone);
         $timestamp = $date->getTimestamp();
         if (time() >= $timestamp) {
-            $this->sendMessage($user_id, "This deadline has already expired!");
-            return;
+            throw new CommandException("This deadline has already expired!");
         }
 
         $deadline = new Deadline(0, $user_id, $timestamp, join(" ", array_slice($args, $this->TIME_ARGS_NUMBER)));
