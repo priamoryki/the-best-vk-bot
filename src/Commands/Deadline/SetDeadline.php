@@ -2,7 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Entities\CommandException;
+use Bot\Commands\CommandException;
 use Bot\Entities\Deadline;
 use Bot\Repositories\TimezonesRepository;
 use Bot\Utils\Crontab;

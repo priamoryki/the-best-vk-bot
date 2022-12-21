@@ -2,8 +2,6 @@
 
 namespace Bot\Commands;
 
-use Bot\Entities\CommandException;
-
 interface Command
 {
     public function getNames(): array;

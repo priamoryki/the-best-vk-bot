@@ -2,7 +2,7 @@
 
 namespace Bot\Commands\Deadline;
 
-use Bot\Entities\CommandException;
+use Bot\Commands\CommandException;
 use Bot\Utils\Crontab;
 use Bot\Utils\VKAdvancedAPI;
 

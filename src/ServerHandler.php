@@ -5,12 +5,12 @@ namespace Bot;
 use Bot\Commands\Chat\CatCommand;
 use Bot\Commands\Chat\HelloCommand;
 use Bot\Commands\Chat\HelpCommand;
+use Bot\Commands\CommandException;
 use Bot\Commands\CommandsStorage;
 use Bot\Commands\Config\SetTimezone;
 use Bot\Commands\Deadline\GetDeadlines;
 use Bot\Commands\Deadline\ResetDeadline;
 use Bot\Commands\Deadline\SetDeadline;
-use Bot\Entities\CommandException;
 use Bot\Utils\Keyboard;
 use Bot\Utils\VKAdvancedAPI;
 use VK\CallbackApi\Server\VKCallbackApiServerHandler;
@@ -55,22 +55,21 @@ class ServerHandler extends VKCallbackApiServerHandler
         $user_id = $message->from_id;
 
         $command = $this->storage->getCommand(array_shift($args));
-        if ($command == null) {
-            $this->vkApi->messages()->send(BOT_TOKEN, [
-                "user_id" => $user_id,
-                "random_id" => random_int(0, PHP_INT_MAX),
-                "message" => "Command not found!",
-                "keyboard" => Keyboard::getButtons(),
-            ]);
-            return;
+        $error = "";
+        if ($command != null) {
+            try {
+                $command->execute($user_id, $args);
+            } catch (CommandException $e) {
+                $error = $e->getMessage();
+            }
+        } else {
+            $error = "Command not found!";
         }
-        try {
-            $command->execute($user_id, $args);
-        } catch (CommandException $e) {
+        if (!empty($error)) {
             $this->vkApi->messages()->send(BOT_TOKEN, [
                 "user_id" => $user_id,
                 "random_id" => random_int(0, PHP_INT_MAX),
-                "message" => $e->getMessage(),
+                "message" => $error,
                 "keyboard" => Keyboard::getButtons(),
             ]);
         }

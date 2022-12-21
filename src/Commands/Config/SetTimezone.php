@@ -2,8 +2,8 @@
 
 namespace Bot\Commands\Config;
 
+use Bot\Commands\CommandException;
 use Bot\Commands\VKCommand;
-use Bot\Entities\CommandException;
 use Bot\Repositories\TimezonesRepository;
 use Bot\Utils\VKAdvancedAPI;
 

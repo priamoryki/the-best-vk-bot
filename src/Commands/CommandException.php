@@ -1,6 +1,6 @@
 <?php
 
-namespace Bot\Entities;
+namespace Bot\Commands;
 
 use Exception;
 use Throwable;
