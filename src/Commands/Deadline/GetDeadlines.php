@@ -31,6 +31,17 @@ class GetDeadlines extends DeadlineCommand
         $timezone = $this->timezonesRepository->getByUserId($user_id);
         $deadlines = $this->deadlinesRepository->getByUserId($user_id);
         $result = "";
+        usort(
+            $deadlines,
+            function ($a, $b) {
+                $a_timestamp = $a->getTimestamp();
+                $b_timestamp = $b->getTimestamp();
+                if ($a_timestamp == $b_timestamp) {
+                    return 0;
+                }
+                return $a_timestamp < $b_timestamp ? -1 : 1;
+            }
+        );
         foreach ($deadlines as $deadline) {
             $id = $deadline->getId();
             $timestamp = date($this->TIME_FORMAT, $deadline->getTimestamp() + 60 * 60 * $timezone);
